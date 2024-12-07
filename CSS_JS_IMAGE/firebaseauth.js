@@ -99,13 +99,32 @@ document.getElementById("submitSignIn").addEventListener("click", async (event) 
       showMessage("User not found in database. Please register first.", "signInMessage");
     }
   } catch (error) {
-    const errorMessage =
-      error.code === "auth/wrong-password"
-        ? "Invalid password. Please try again."
-        : error.code === "auth/user-not-found"
-        ? "Email does not exist. Please register first."
-        : "Login failed: " + error.message;
+    // Handle specific Firebase error codes
+    let errorMessage = "Login failed: " + error.message; // Default error message
 
+    switch (error.code) {
+      case "auth/wrong-password":
+        errorMessage = "Invalid password. Please try again.";
+        break;
+      case "auth/user-not-found":
+        errorMessage = "Email does not exist. Please register first.";
+        break;
+      case "auth/invalid-email":
+        errorMessage = "Invalid email address format.";
+        break;
+      case "auth/too-many-requests":
+        errorMessage = "Too many failed login attempts. Please try again later.";
+        break;
+      case "auth/network-request-failed":
+        errorMessage = "Network error. Please check your connection.";
+        break;
+      default:
+        // Log unhandled error codes
+        console.error("Unhandled error code:", error.code);
+        break;
+    }
+
+    // Show the error message to the user
     showMessage(errorMessage, "signInMessage");
     console.error(error);
   }
