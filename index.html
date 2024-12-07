@@ -7,15 +7,17 @@
       src="https://kit.fontawesome.com/64d58efce2.js"
       crossorigin="anonymous"
     ></script>
+    <script type="module" src="CSS_JS_IMAGE/firebaseauth.js"></script>
     <link rel="stylesheet" href="CSS_JS_IMAGE/style.css" />
     <title>ACTIVITY IN SIA</title>
   </head>
   <body>
     <div class="container">
-        <!--LOGIN FORM-->
       <div class="forms-container">
         <div class="signin-signup">
-          <form action="" class="sign-in-form" method="post">
+          <!-- Login Form -->
+          <form action="" class="sign-in-form" id="signIn" method="post">
+            <div id="signInMessage" class="messageDiv" style="display:none;"></div>
             <h2 class="title">Log In</h2>
             <div class="input-field">
               <i class="fas fa-user"></i>
@@ -23,30 +25,37 @@
             </div>
             <div class="input-field">
               <i class="fas fa-lock"></i>
-              <input type="password" placeholder="Password" name="password"/>
+              <input type="password" placeholder="Password" name="password" />
             </div>
             <input type="submit" value="Login" class="btn solid" name="login" />
+            <div class="alert-box"></div>
           </form>
-          <!--REGISTER FORM-->
-          <form action="" class="sign-up-form" method="post"> 
+          <!-- Register Form -->
+          <form action="" class="sign-up-form" id="signUp" method="post">
+            <div id="signUpMessage" class="messageDiv" style="display:none;"></div>
             <h2 class="title">Register</h2>
             <div class="input-field">
               <i class="fas fa-user"></i>
-              <input type="text" placeholder="Username" name="username"/>
+              <input type="text" id="rFname" placeholder="First Name" name="fname" />
+            </div>
+            <div class="input-field">
+              <i class="fas fa-user"></i>
+              <input type="text" id="rLname" placeholder="Last Name" name="lname" />
             </div>
             <div class="input-field">
               <i class="fas fa-envelope"></i>
-              <input type="email" placeholder="Email" name="email"/>
+              <input type="email" id="rEmail" placeholder="Email" name="email" />
             </div>
             <div class="input-field">
               <i class="fas fa-lock"></i>
-              <input type="password" placeholder="Password" name="password" />
+              <input type="password" id="rPassword" placeholder="Password" name="password" />
             </div>
             <div class="input-field">
               <i class="fas fa-lock"></i>
               <input type="password" placeholder="Confirm Password" name="passwordConfirm" />
             </div>
-            <input type="submit" class="btn" value="Sign up" name="submit" />
+            <input type="submit" id="submitSignUp" class="btn" value="Sign up" name="submit" />
+            <div class="alert-box"></div>
           </form>
         </div>
       </div>
@@ -74,5 +83,6 @@
     </div>
 
     <script src="CSS_JS_IMAGE/app.js"></script>
+    <script src="CSS_JS_IMAGE/script.js"></script>
   </body>
 </html>

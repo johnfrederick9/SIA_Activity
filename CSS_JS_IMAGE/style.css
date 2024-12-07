@@ -469,3 +469,27 @@ a{
   text-decoration: none;
   color:white;
   }
+
+  .alert-box {
+    margin-top: 10px;
+    font-size: 18px;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+  
+  .sign-up-form .alert-box {
+    color: #4caf50; /* Green color for success messages */
+  }
+  
+  .messageDiv{
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    margin: 10px;
+    border-radius: 5px;
+    font-size: 1rem;
+    opacity: 0;
+    animation:fadeOut 7s forwards;
+  }
