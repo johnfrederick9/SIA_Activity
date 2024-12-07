@@ -1,103 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="CSS_JS_IMAGE/style.css" />
-  <script type="module" src="CSS_JS_IMAGE/firebaseauth.js"></script>
-  <title>ACTIVITY IN SIA</title>
-  <link rel="icon" href="CSS_JS_IMAGE/log.svg" />
-</head>
-<body>
-  <section class="verification">
-    <div class="vcontainer">
-      <h2>Enter Your Email Verification Code</h2>
-      <p>
-        Enter the six-digit verification code sent to your email.
-      </p>
-      <div id="message" style="color: red; margin-bottom: 10px; display: none;"></div>
-      <div class="code-container">
-        <input type="number" class="code" maxlength="1" placeholder="0" required />
-        <input type="number" class="code" maxlength="1" placeholder="0" required />
-        <input type="number" class="code" maxlength="1" placeholder="0" required />
-        <input type="number" class="code" maxlength="1" placeholder="0" required />
-        <input type="number" class="code" maxlength="1" placeholder="0" required />
-        <input type="number" class="code" maxlength="1" placeholder="0" required />
-      </div>
-      <div>
-        <button type="button" class="btn btn-primary" id="verifyButton">Verify</button>
-      </div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="CSS_JS_IMAGE/style.css" />
+    <title>ACTIVITY IN SIA</title>
+    <link rel="icon" href="CSS_JS_IMAGE/log.svg">
+  </head>
+  <body>
+<section class="verification">
+  <div class="vcontainer">
+    <h2>Enter your E-mail Verification</h2>
+    <p>
+    Enter the six-digit verification code sent to your email.
+    </p>
+    <div class="code-container">
+      <input type="number" class="code" placeholder="0" min="0" max="9" required>
+      <input type="number" class="code" placeholder="0" min="0" max="9" required>
+      <input type="number" class="code" placeholder="0" min="0" max="9" required>
+      <input type="number" class="code" placeholder="0" min="0" max="9" required>
+      <input type="number" class="code" placeholder="0" min="0" max="9" required>
+      <input type="number" class="code" placeholder="0" min="0" max="9" required>
     </div>
-  </section>
+    <div>
+      <button type="button" class="btn btn-primary">Verify</button>
+    </div>
+  </div>
+</section>
+<script>
+  const codes = document.querySelectorAll('.code')
 
-  <script type="module">
-    // Import Firebase modules
-    import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-functions.js";
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+codes[0].focus()
 
-    // Firebase configuration
-    const firebaseConfig = {
-      apiKey: "AIzaSyA3tspF8Bk3NiHh8eD-yYvJwZM2DbgnijE",
-      authDomain: "login-form-129dc.firebaseapp.com",
-      projectId: "login-form-129dc",
-      storageBucket: "login-form-129dc.appspot.com",
-      messagingSenderId: "360964365086",
-      appId: "1:360964365086:web:0306b4f0b6ecd2473bc70f",
-    };
-
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const functions = getFunctions(app);
-
-    // Code input focus handling
-    const codes = document.querySelectorAll('.code');
-    codes[0].focus();
-    codes.forEach((code, idx) => {
-      code.addEventListener('keydown', (e) => {
-        if (e.key >= 0 && e.key <= 9) {
-          codes[idx].value = '';
-          setTimeout(() => codes[idx + 1]?.focus(), 10);
-        } else if (e.key === 'Backspace') {
-          setTimeout(() => codes[idx - 1]?.focus(), 10);
+codes.forEach((code, idx) => {
+    code.addEventListener('keydown', (e) => {
+        if(e.key >= 0 && e.key <=9) {
+            codes[idx].value = ''
+            setTimeout(() => codes[idx + 1].focus(), 10)
+        } else if(e.key === 'Backspace') {
+            setTimeout(() => codes[idx - 1].focus(), 10)
         }
-      });
-    });
-
-    // Verification button handler
-    document.getElementById('verifyButton').addEventListener('click', async () => {
-      const code = Array.from(codes).map(input => input.value).join('');
-      const messageDiv = document.getElementById('message');
-
-      if (code.length !== 6) {
-        messageDiv.textContent = "Please enter all 6 digits of the code.";
-        messageDiv.style.display = "block";
-        return;
-      }
-
-      try {
-        // Call the verifyCode function
-        const verifyCode = httpsCallable(functions, 'verifyCode');
-        const result = await verifyCode({ code });
-        const { isValid } = result.data;
-
-        if (isValid) {
-          messageDiv.textContent = "Verification successful! Redirecting to dashboard...";
-          messageDiv.style.color = "green";
-          messageDiv.style.display = "block";
-          setTimeout(() => {
-            window.location.href = "dashboard.html";
-          }, 2000);
-        } else {
-          messageDiv.textContent = "Invalid code. Please try again.";
-          messageDiv.style.color = "red";
-          messageDiv.style.display = "block";
-        }
-      } catch (error) {
-        console.error("Verification error:", error);
-        messageDiv.textContent = "An error occurred during verification. Please try again.";
-        messageDiv.style.display = "block";
-      }
-    });
-  </script>
+    })
+})
+</script>
 </body>
 </html>
