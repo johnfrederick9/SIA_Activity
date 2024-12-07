@@ -5,7 +5,6 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
-import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-functions.js";
 import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
 // Firebase configuration
@@ -22,7 +21,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth();
 const db = getFirestore();
-const functions = getFunctions(app);
 
 // Helper function to display messages
 function showMessage(message, divId) {
@@ -93,14 +91,16 @@ document.getElementById("submitSignIn").addEventListener("click", async (event) 
 
     localStorage.setItem("loggedInUserId", user.uid);
 
-    // Trigger email verification code generation
-    const generateCode = httpsCallable(functions, "generateVerificationCode");
-    await generateCode({ email });
-
-    // Redirect to verification page
-    window.location.href = "authentication.html";
+    const userDoc = await getDoc(doc(db, "users", user.uid));
+    if (userDoc.exists()) {
+      showMessage("Log-In successful!", "signInMessage");
+      window.location.href = "dashboard.html";
+    } else {
+      showMessage("User not found in database. Please register first.", "signInMessage");
+    }
   } catch (error) {
-    let errorMessage = "Login failed: " + error.message;
+    // Handle specific Firebase error codes
+    let errorMessage = "Login failed: " + error.message; // Default error message
 
     switch (error.code) {
       case "auth/wrong-password":
@@ -119,10 +119,12 @@ document.getElementById("submitSignIn").addEventListener("click", async (event) 
         errorMessage = "Network error. Please check your connection.";
         break;
       default:
+        // Log unhandled error codes
         console.error("Unhandled error code:", error.code);
         break;
     }
 
+    // Show the error message to the user
     showMessage(errorMessage, "signInMessage");
     console.error(error);
   }
