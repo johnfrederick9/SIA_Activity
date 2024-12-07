@@ -21,6 +21,7 @@ const db = getFirestore();
 onAuthStateChanged(auth, (user) => {
     const loggedInUserId = localStorage.getItem("loggedInUserId");
     if (loggedInUserId) {
+        // Fetch user data
         const docRef = doc(db, "users", loggedInUserId);
         getDoc(docRef)
             .then((docSnap) => {
@@ -36,7 +37,9 @@ onAuthStateChanged(auth, (user) => {
                 console.error("Error getting document: ", error);
             });
     } else {
-        console.log("User ID not found in local storage");
+        console.log("User ID not found in local storage. Redirecting...");
+        // Redirect to login page
+        window.location.href = "index.html";
     }
 });
 
