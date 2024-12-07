@@ -61,7 +61,8 @@ document.getElementById("submitSignUp").addEventListener("click", async (event) 
     });
 
     showMessage("Registration successful! You can now log in.", "signUpMessage");
-    document.getElementById("signUp").reset(); // Clear the form
+    window.location.href = "index.html";
+    //document.getElementById("signUp").reset(); // Clear the form
   } catch (error) {
     if (error.code === "auth/email-already-in-use") {
       showMessage("This email is already registered. Please log in.", "signUpMessage");
@@ -95,6 +96,7 @@ document.getElementById("submitSignIn").addEventListener("click", async (event) 
     const userDoc = await getDoc(doc(db, "users", user.uid));
     if (userDoc.exists()) {
       // Redirect to the dashboard
+      showMessage("Log-In successful!.", "signInMessage");
       window.location.href = "dashboard.html";
     } else {
       showMessage("User not found in database. Please register first.", "signInMessage");
