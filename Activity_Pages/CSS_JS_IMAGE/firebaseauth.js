@@ -1,71 +1,94 @@
-// Import the functions you need from the SDKs you need
+// Import the Firebase modules
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
 import { getFirestore, setDoc, doc } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
+// Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyA3tspF8Bk3NiHh8eD-yYvJwZM2DbgnijE",
   authDomain: "login-form-129dc.firebaseapp.com",
   projectId: "login-form-129dc",
-  storageBucket: "login-form-129dc.firebasestorage.app",
+  storageBucket: "login-form-129dc.appspot.com",
   messagingSenderId: "360964365086",
   appId: "1:360964365086:web:0306b4f0b6ecd2473bc70f",
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+const auth = getAuth();
+const db = getFirestore();
 
+// Helper function to display messages
 function showMessage(message, divId) {
-  var messageDiv = document.getElementById(divId);
+  const messageDiv = document.getElementById(divId);
   messageDiv.style.display = "block";
   messageDiv.innerHTML = message;
   messageDiv.style.opacity = 1;
-  setTimeout(function () {
+  setTimeout(() => {
     messageDiv.style.opacity = 0;
   }, 5000);
 }
 
-const signUp = document.getElementById("submitSignUp");
-signUp.addEventListener("click", (event) => {
+// Log In Event Listener
+document.getElementById("signIn").addEventListener("submit", async (event) => {
   event.preventDefault();
-  const email = document.getElementById("rEmail").value;
-  const password = document.getElementById("rPassword").value;
-  const firstName = document.getElementById("rFname").value;
-  const lastName = document.getElementById("rLname").value;
+  
+  const username = document.querySelector("input[name='username']").value.trim();
+  const password = document.querySelector("input[name='password']").value.trim();
 
-  const auth = getAuth();
-  const db = getFirestore();
+  if (!username || !password) {
+    showMessage("Please fill out all fields.", "signInMessage");
+    return;
+  }
 
-  createUserWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      const user = userCredential.user;
-      const userData = {
-        email: email,
-        firstName: firstName,
-        lastName: lastName,
-      };
-      showMessage("Account Created Successfully", "signUpMessage");
-      
-      // Corrected line: Properly invoke `doc` to reference Firestore document
-      const docRef = doc(db, "users", user.uid);
-      setDoc(docRef, userData)
-        .then(() => {
-          window.location.href = "index.html";
-        })
-        .catch((error) => {
-          console.error("Error writing document", error);
-        });
-    })
-    .catch((error) => {
-      const errorCode = error.code;
-      if (errorCode === "auth/email-already-in-use") {
-        showMessage("Email Address Already Exists..", "signUpMessage");
-      } else {
-        showMessage("Unable to Create User", "signUpMessage");
-      }
+  try {
+    // Sign in user
+    const userCredential = await signInWithEmailAndPassword(auth, username, password);
+    showMessage("Login Successful!", "signInMessage");
+    window.location.href = "dashboard.html"; // Redirect to a dashboard or home page
+  } catch (error) {
+    console.error(error);
+    showMessage("Login Failed: " + error.message, "signInMessage");
+  }
+});
+
+// Register Event Listener
+document.getElementById("submitSignUp").addEventListener("click", async (event) => {
+  event.preventDefault();
+
+  const firstName = document.getElementById("rFname").value.trim();
+  const lastName = document.getElementById("rLname").value.trim();
+  const email = document.getElementById("rEmail").value.trim();
+  const password = document.getElementById("rPassword").value.trim();
+  const confirmPassword = document.querySelector("input[name='passwordConfirm']").value.trim();
+
+  if (!firstName || !lastName || !email || !password || !confirmPassword) {
+    showMessage("Please fill out all fields.", "signUpMessage");
+    return;
+  }
+
+  if (password !== confirmPassword) {
+    showMessage("Passwords do not match.", "signUpMessage");
+    return;
+  }
+
+  try {
+    // Create a new user
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
+
+    // Add user to Firestore
+    const userDoc = doc(db, "users", user.uid);
+    await setDoc(userDoc, {
+      firstName,
+      lastName,
+      email,
     });
+
+    showMessage("Account Created Successfully!", "signUpMessage");
+    window.location.href = "index.html"; // Redirect on success
+  } catch (error) {
+    console.error(error);
+    showMessage("Registration Failed: " + error.message, "signUpMessage");
+  }
 });
