@@ -1,47 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="CSS_JS_IMAGE/style.css" />
-    <title>ACTIVITY IN SIA</title>
-    <link rel="icon" href="CSS_JS_IMAGE/log.svg">
-  </head>
-  <body>
-<section class="verification">
-  <div class="vcontainer">
-    <h2>Enter your E-mail Verification</h2>
-    <p>
-    Enter the six-digit verification code sent to your email.
-    </p>
-    <div class="code-container">
-      <input type="number" class="code" placeholder="0" min="0" max="9" required>
-      <input type="number" class="code" placeholder="0" min="0" max="9" required>
-      <input type="number" class="code" placeholder="0" min="0" max="9" required>
-      <input type="number" class="code" placeholder="0" min="0" max="9" required>
-      <input type="number" class="code" placeholder="0" min="0" max="9" required>
-      <input type="number" class="code" placeholder="0" min="0" max="9" required>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="CSS_JS_IMAGE/style.css" />
+  <title>Verify Your Email</title>
+</head>
+<body>
+  <section class="verification">
+    <div class="vcontainer">
+      <h2>Email Verification</h2>
+      <p>Enter the six-digit code sent to your email address.</p>
+      <div id="message" style="color: rgb(55, 102, 255); margin-bottom: 10px; display: none;"></div>
+      <div class="code-container">
+        <input type="number" class="code" maxlength="1" placeholder="0" />
+        <input type="number" class="code" maxlength="1" placeholder="0" />
+        <input type="number" class="code" maxlength="1" placeholder="0" />
+        <input type="number" class="code" maxlength="1" placeholder="0" />
+        <input type="number" class="code" maxlength="1" placeholder="0" />
+        <input type="number" class="code" maxlength="1" placeholder="0" />
+      </div>
+      <button type="button" class="btn" id="verifyButton">Verify</button>
     </div>
-    <div>
-      <button type="button" class="btn btn-primary">Verify</button>
-    </div>
-  </div>
-</section>
-<script>
-  const codes = document.querySelectorAll('.code')
+  </section>
 
-codes[0].focus()
+  <script type="module">
+    import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-functions.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
 
-codes.forEach((code, idx) => {
-    code.addEventListener('keydown', (e) => {
-        if(e.key >= 0 && e.key <=9) {
-            codes[idx].value = ''
-            setTimeout(() => codes[idx + 1].focus(), 10)
-        } else if(e.key === 'Backspace') {
-            setTimeout(() => codes[idx - 1].focus(), 10)
+    const firebaseConfig = { /* Your Firebase Config */ };
+    const app = initializeApp(firebaseConfig);
+    const functions = getFunctions(app);
+
+    document.getElementById("verifyButton").addEventListener("click", async () => {
+      const codes = document.querySelectorAll('.code');
+      const code = Array.from(codes).map(input => input.value).join('');
+      const messageDiv = document.getElementById("message");
+
+      if (code.length !== 6) {
+        messageDiv.textContent = "Please enter a valid 6-digit code.";
+        messageDiv.style.display = "block";
+        return;
+      }
+
+      try {
+        const verifyCode = httpsCallable(functions, "verifyCode");
+        const result = await verifyCode({ code });
+        const { isValid } = result.data;
+
+        if (isValid) {
+          messageDiv.style.color = "green";
+          messageDiv.textContent = "Verification successful! Redirecting...";
+          messageDiv.style.display = "block";
+          setTimeout(() => {
+            window.location.href = "dashboard.html";
+          }, 2000);
+        } else {
+          messageDiv.textContent = "Invalid code. Please try again.";
+          messageDiv.style.display = "block";
         }
-    })
-})
-</script>
+      } catch (error) {
+        messageDiv.textContent = "Error during verification. Please try again.";
+        messageDiv.style.display = "block";
+      }
+    });
+  </script>
 </body>
 </html>
