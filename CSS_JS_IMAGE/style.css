@@ -668,89 +668,100 @@ a{
     }
 }
 
-  /*=============== AUTHENTICATION ================*/
-  .verification {
-    font-family: "Lato", sans-serif;
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    margin: 0;
+ /*=============== AUTHENTICATION ================*/
+.verification {
+  font-family: "Lato", sans-serif;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  margin: 0;
+}
+
+.verification .vcontainer {
+  background-color: rgba(212, 212, 212, 0.897);
+  border-radius: 10px;
+  padding: 30px;
+  max-width: 90%; /* Adjusted for better mobile fit */
+  text-align: center;
+  box-sizing: border-box; /* Ensures padding doesn't exceed container width */
+}
+
+.verification .code-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 40px 0;
+  gap: 10px; /* Improved spacing for inputs */
+  flex-wrap: wrap; /* Automatically wrap on smaller screens */
+}
+
+.verification .code {
+  caret-color: transparent;
+  background-color: rgba(255, 255, 255, 0.6);
+  border-radius: 10px;
+  border: 1px solid #eee;
+  font-size: 30px;
+  font-family: "Lato", sans-serif;
+  width: 75px;
+  height: 80px;
+  text-align: center;
+  font-weight: 300;
+}
+
+.verification .code::-webkit-outer-spin-button,
+.verification .code::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+.verification .code:valid {
+  border-color: #4481eb;
+  box-shadow: 0 10px 10px -5px rgba(0, 0, 0, 0.25);
+}
+
+.verification .btn {
+  font-family: "Lato", sans-serif;
+  width: 100%; /* Adjusted to fit smaller screens */
+  max-width: 400px;
+  text-align: center;
+  cursor: pointer;
+  border: 1px solid transparent;
+  padding: 0.775rem 0.75rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  border-radius: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  margin: 0 auto 20px auto;
+  display: inline-block;
+}
+
+.verification .btn-primary {
+  color: #fff;
+  background-color: #4481eb;
+  border-color: #5995fd;
+}
+
+/* Responsive styles for mobile */
+@media (max-width: 600px) {
+  .verification .code-container {
+    flex-wrap: wrap;
+    gap: 8px; /* Slightly smaller spacing */
   }
-  
-  .verification .vcontainer{
-    background-color: rgba(212, 212, 212, 0.897);
-    border-radius: 10px;
-    padding: 30px;
-    max-width: 1000px;
-    text-align: center;
+
+  .verification .code {
+    font-size: 20px; /* Reduced font size for smaller screens */
+    height: 60px;
+    width: 60px;
   }
-  
-  .verification .code-container{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 40px 0;
+
+  .verification .vcontainer {
+    padding: 20px; /* Adjusted padding for mobile */
   }
-  
-  .verification .code{
-    caret-color: transparent;
-    background-color: rgba(255, 255, 255, 0.6);
-    border-radius: 10px;
-    border: 1px solid #eee;
-    font-size: 30px;
-    font-family: "Lato", sans-serif;
-    width: 75px;
-    height: 80px;
-    margin: 10px;
-    text-align: center;
-    font-weight: 300;
+
+  .verification .btn {
+    font-size: 0.9rem; /* Smaller text for button */
+    padding: 0.7rem; /* Adjusted button padding */
   }
-  
-  @media (max-width: 600px) {
-    .verification .code-container{
-      flex-wrap: wrap;
-    }
-    .verification .code{
-      font-size: 24px;
-      height: 50px;
-      max-width: 50px;
-      font-size: bold;
-    }
-  }
-  
-  .verification .code::-webkit-outer-spin-button,
-  .verification .code::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-  }
-  
-  .verification .code:valid {
-    border-color: #4481eb;
-    box-shadow: 0 10px 10px -5px rgba(0, 0, 0, 0.25);
-  }
-  
-  .verification .btn{
-    font-family: "Lato", sans-serif;
-    min-width: 400px;
-    display: inline-block;
-    text-align: center;
-    white-space: nowrap;
-    vertical-align: middle;
-    user-select: none;
-    cursor: pointer;
-    border: 1px solid transparent;
-    margin: 0px 0px 20px 0px;
-    padding: 0.775rem 0.75rem;
-    font-size: 1rem;
-    line-height: 1.5;
-    border-radius: 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.7;
-  }
-  
-  .verification .btn-primary{
-    color: #fff;
-    background-color: #4481eb;
-    border-color: #5995fd;
-  }
+}
