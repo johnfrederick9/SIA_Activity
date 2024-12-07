@@ -1,7 +1,11 @@
-// Import the Firebase modules
+// Import Firebase modules
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
-import { getFirestore, setDoc, doc } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
 // Firebase configuration
 const firebaseConfig = {
@@ -29,66 +33,80 @@ function showMessage(message, divId) {
   }, 5000);
 }
 
-// Log In Event Listener
-document.getElementById("signIn").addEventListener("submit", async (event) => {
+// ** SubmitSignUp Functionality **
+document.getElementById("submitSignUp").addEventListener("click", async (event) => {
   event.preventDefault();
-  
-  const username = document.querySelector("input[name='username']").value.trim();
-  const password = document.querySelector("input[name='password']").value.trim();
 
-  if (!username || !password) {
+  const fname = document.getElementById("rFname").value.trim();
+  const lname = document.getElementById("rLname").value.trim();
+  const email = document.getElementById("rEmail").value.trim();
+  const password = document.getElementById("rPassword").value.trim();
+
+  if (!fname || !lname || !email || !password) {
+    showMessage("Please fill out all fields.", "signUpMessage");
+    return;
+  }
+
+  try {
+    // Register the user in Firebase Authentication
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
+
+    // Store additional user details in Firestore
+    await setDoc(doc(db, "users", user.uid), {
+      firstName: fname,
+      lastName: lname,
+      email: email,
+      createdAt: new Date(),
+    });
+
+    showMessage("Registration successful! You can now log in.", "signUpMessage");
+    document.getElementById("signUp").reset(); // Clear the form
+  } catch (error) {
+    if (error.code === "auth/email-already-in-use") {
+      showMessage("This email is already registered. Please log in.", "signUpMessage");
+    } else if (error.code === "auth/weak-password") {
+      showMessage("Password must be at least 6 characters.", "signUpMessage");
+    } else {
+      console.error(error);
+      showMessage("Registration failed: " + error.message, "signUpMessage");
+    }
+  }
+});
+
+// ** SubmitSignIn Functionality **
+document.getElementById("submitSignIn").addEventListener("click", async (event) => {
+  event.preventDefault();
+
+  const email = document.getElementById("signInEmail").value.trim();
+  const password = document.getElementById("signInPassword").value.trim();
+
+  if (!email || !password) {
     showMessage("Please fill out all fields.", "signInMessage");
     return;
   }
 
   try {
-    // Sign in user
-    const userCredential = await signInWithEmailAndPassword(auth, username, password);
-    showMessage("Login Successful!", "signInMessage");
-    window.location.href = "dashboard.html"; // Redirect to a dashboard or home page
-  } catch (error) {
-    console.error(error);
-    showMessage("Login Failed: " + error.message, "signInMessage");
-  }
-});
-
-// Register Event Listener
-document.getElementById("submitSignUp").addEventListener("click", async (event) => {
-  event.preventDefault();
-
-  const firstName = document.getElementById("rFname").value.trim();
-  const lastName = document.getElementById("rLname").value.trim();
-  const email = document.getElementById("rEmail").value.trim();
-  const password = document.getElementById("rPassword").value.trim();
-  const confirmPassword = document.querySelector("input[name='passwordConfirm']").value.trim();
-
-  if (!firstName || !lastName || !email || !password || !confirmPassword) {
-    showMessage("Please fill out all fields.", "signUpMessage");
-    return;
-  }
-
-  if (password !== confirmPassword) {
-    showMessage("Passwords do not match.", "signUpMessage");
-    return;
-  }
-
-  try {
-    // Create a new user
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    // Firebase Authentication
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
 
-    // Add user to Firestore
-    const userDoc = doc(db, "users", user.uid);
-    await setDoc(userDoc, {
-      firstName,
-      lastName,
-      email,
-    });
-
-    showMessage("Account Created Successfully!", "signUpMessage");
-    window.location.href = "index.html"; // Redirect on success
+    // Check if user exists in Firestore
+    const userDoc = await getDoc(doc(db, "users", user.uid));
+    if (userDoc.exists()) {
+      // Redirect to the dashboard
+      window.location.href = "dashboard.html";
+    } else {
+      showMessage("User not found in database. Please register first.", "signInMessage");
+    }
   } catch (error) {
-    console.error(error);
-    showMessage("Registration Failed: " + error.message, "signUpMessage");
+    if (error.code === "auth/wrong-password") {
+      showMessage("Invalid password. Please try again.", "signInMessage");
+    } else if (error.code === "auth/user-not-found") {
+      showMessage("Email does not exist. Please register first.", "signInMessage");
+    } else {
+      console.error(error);
+      showMessage("Login failed: " + error.message, "signInMessage");
+    }
   }
 });
