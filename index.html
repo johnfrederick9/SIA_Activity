@@ -20,15 +20,16 @@
             <h2 class="title">Log In</h2>
             <div class="input-field">
               <i class="fas fa-user"></i>
-              <input type="text" placeholder="Username" name="username" />
+              <input type="email" placeholder="Email" id="signInEmail" name="username" required />
             </div>
             <div class="input-field">
               <i class="fas fa-lock"></i>
-              <input type="password" placeholder="Password" name="password" />
+              <input type="password" placeholder="Password" id="signInPassword" name="password" required />
             </div>
-            <input type="submit" value="Login" class="btn solid" name="login" />
-            <div id="signInMessage" class="messageDiv" style="display:none;"></div>
+            <input type="submit" id="submitSignIn" value="Login" class="btn solid" name="login" />
+            <div id="signInMessage" class="messageDiv" style="display:none; color: red;"></div>
           </form>
+
           <!-- Register Form -->
           <form action="" class="sign-up-form" id="signUp" method="post">
             
