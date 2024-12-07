@@ -1,7 +1,18 @@
 // Import Firebase modules
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,} from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
-import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+  signOut,
+} from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+import {
+  getFirestore,
+  doc,
+  setDoc,
+  getDoc,
+} from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
 // Firebase configuration
 const firebaseConfig = {
@@ -29,7 +40,7 @@ function showMessage(message, divId) {
   }, 5000);
 }
 
-// ** SubmitSignUp Functionality **
+// ** Registration Functionality **
 document.getElementById("submitSignUp").addEventListener("click", async (event) => {
   event.preventDefault();
 
@@ -44,11 +55,9 @@ document.getElementById("submitSignUp").addEventListener("click", async (event) 
   }
 
   try {
-    // Register the user in Firebase Authentication
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
 
-    // Store additional user details in Firestore
     await setDoc(doc(db, "users", user.uid), {
       firstName: fname,
       lastName: lname,
@@ -58,20 +67,20 @@ document.getElementById("submitSignUp").addEventListener("click", async (event) 
 
     showMessage("Registration successful! You can now log in.", "signUpMessage");
     window.location.href = "index.html";
-    //document.getElementById("signUp").reset(); // Clear the form
   } catch (error) {
-    if (error.code === "auth/email-already-in-use") {
-      showMessage("This email is already registered. Please log in.", "signUpMessage");
-    } else if (error.code === "auth/weak-password") {
-      showMessage("Password must be at least 6 characters.", "signUpMessage");
-    } else {
-      console.error(error);
-      showMessage("Registration failed: " + error.message, "signUpMessage");
-    }
+    const errorMessage =
+      error.code === "auth/email-already-in-use"
+        ? "This email is already registered. Please log in."
+        : error.code === "auth/weak-password"
+        ? "Password must be at least 6 characters."
+        : "Registration failed: " + error.message;
+
+    showMessage(errorMessage, "signUpMessage");
+    console.error(error);
   }
 });
 
-// ** SubmitSignIn Functionality **
+// ** Login Functionality **
 document.getElementById("submitSignIn").addEventListener("click", async (event) => {
   event.preventDefault();
 
@@ -84,27 +93,63 @@ document.getElementById("submitSignIn").addEventListener("click", async (event) 
   }
 
   try {
-    // Firebase Authentication
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
 
-    // Check if user exists in Firestore
+    localStorage.setItem("loggedInUserId", user.uid);
+
     const userDoc = await getDoc(doc(db, "users", user.uid));
     if (userDoc.exists()) {
-      // Redirect to the dashboard
-      showMessage("Log-In successful!.", "signInMessage");
+      showMessage("Log-In successful!", "signInMessage");
       window.location.href = "dashboard.html";
     } else {
       showMessage("User not found in database. Please register first.", "signInMessage");
     }
   } catch (error) {
-    if (error.code === "auth/wrong-password") {
-      showMessage("Invalid password. Please try again.", "signInMessage");
-    } else if (error.code === "auth/user-not-found") {
-      showMessage("Email does not exist. Please register first.", "signInMessage");
-    } else {
-      console.error(error);
-      showMessage("Login failed: " + error.message, "signInMessage");
-    }
+    const errorMessage =
+      error.code === "auth/wrong-password"
+        ? "Invalid password. Please try again."
+        : error.code === "auth/user-not-found"
+        ? "Email does not exist. Please register first."
+        : "Login failed: " + error.message;
+
+    showMessage(errorMessage, "signInMessage");
+    console.error(error);
   }
+});
+
+// ** Dashboard Functionality **
+onAuthStateChanged(auth, (user) => {
+  const loggedInUserId = localStorage.getItem("loggedInUserId");
+  if (user && loggedInUserId) {
+    const docRef = doc(db, "users", loggedInUserId);
+    getDoc(docRef)
+      .then((docSnap) => {
+        if (docSnap.exists()) {
+          const userData = docSnap.data();
+          document.getElementById("loggedUserFName").innerText = userData.firstName;
+          document.getElementById("loggedUserLName").innerText = userData.lastName;
+        } else {
+          console.log("No document found matching the ID");
+        }
+      })
+      .catch((error) => {
+        console.error("Error getting document: ", error);
+      });
+  } else {
+    console.log("User ID not found in local storage. Redirecting...");
+    window.location.href = "index.html";
+  }
+});
+
+// ** Logout Functionality **
+document.getElementById("logout").addEventListener("click", () => {
+  localStorage.removeItem("loggedInUserId");
+  signOut(auth)
+    .then(() => {
+      window.location.href = "index.html";
+    })
+    .catch((error) => {
+      console.error("Error signing out: ", error);
+    });
 });
