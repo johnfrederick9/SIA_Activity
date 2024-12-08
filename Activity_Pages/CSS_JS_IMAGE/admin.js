@@ -41,3 +41,9 @@ async function fetchUsers() {
 
 // Fetch users on page load
 document.addEventListener("DOMContentLoaded", fetchUsers);
+
+// ** Admin Logout Functionality **
+document.getElementById("adminLogoutButton")?.addEventListener("click", () => {
+  localStorage.removeItem("isAdmin");
+  window.location.href = "index.html"; // Redirect to login page
+});
