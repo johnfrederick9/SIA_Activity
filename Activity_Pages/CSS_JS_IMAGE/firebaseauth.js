@@ -82,7 +82,6 @@ document.getElementById("submitSignUp").addEventListener("click", async (event) 
   }
 });
 
-
 // ** Login Functionality **
 document.getElementById("submitSignIn").addEventListener("click", async (event) => {
   event.preventDefault();
