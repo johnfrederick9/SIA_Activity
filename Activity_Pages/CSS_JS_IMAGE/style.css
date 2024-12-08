@@ -779,7 +779,33 @@ a{
     transition: all 0.3s ease;
     z-index: 2000;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 100vh; /* Ensures the sidebar takes up full vertical height */
 }
+
+
+.sidebar-footer {
+  padding: 10px;
+}
+
+.sidebar-footer .logout-btn {
+  margin-top: 370px;
+  color: #fff;
+  text-decoration: none;
+  font-size: 1rem;
+  padding: 10px 15px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: background-color 0.3s ease, padding 0.3s ease;
+}
+
+.sidebar-footer .logout-btn:hover {
+  background-color: #3a3a4d;
+}
+
 
 .sidebar.closed {
     width: 60px;
