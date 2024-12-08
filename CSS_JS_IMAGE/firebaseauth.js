@@ -33,46 +33,6 @@ function showMessage(message, divId) {
   }, 5000);
 }
 
-// ** Registration Functionality **
-document.getElementById("submitSignUp").addEventListener("click", async (event) => {
-  event.preventDefault();
-
-  const fname = document.getElementById("rFname").value.trim();
-  const lname = document.getElementById("rLname").value.trim();
-  const email = document.getElementById("rEmail").value.trim();
-  const password = document.getElementById("rPassword").value.trim();
-
-  if (!fname || !lname || !email || !password) {
-    showMessage("Please fill out all fields.", "signUpMessage");
-    return;
-  }
-
-  try {
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    const user = userCredential.user;
-
-    await setDoc(doc(db, "users", user.uid), {
-      firstName: fname,
-      lastName: lname,
-      email: email,
-      createdAt: new Date(),
-    });
-
-    showMessage("Registration successful! You can now log in.", "signUpMessage");
-    window.location.href = "index.html";
-  } catch (error) {
-    const errorMessage =
-      error.code === "auth/email-already-in-use"
-        ? "This email is already registered. Please log in."
-        : error.code === "auth/weak-password"
-        ? "Password must be at least 6 characters."
-        : "Registration failed: " + error.message;
-
-    showMessage(errorMessage, "signUpMessage");
-    console.error(error);
-  }
-});
-
 // ** Login Functionality **
 document.getElementById("submitSignIn").addEventListener("click", async (event) => {
   event.preventDefault();
@@ -88,6 +48,7 @@ document.getElementById("submitSignIn").addEventListener("click", async (event) 
   try {
     // Admin login condition
     if (email === "Develo4" && password === "develo4@2024") {
+      localStorage.setItem("isAdmin", "true");
       showMessage("Login successfully as an Admin.", "signInMessage");
       window.location.href = "admin.html";
       return;
@@ -106,8 +67,7 @@ document.getElementById("submitSignIn").addEventListener("click", async (event) 
       showMessage("User not found in database. Please register first.", "signInMessage");
     }
   } catch (error) {
-    // Handle specific Firebase error codes
-    let errorMessage = "Login failed: " + error.message; // Default error message
+    let errorMessage = "Login failed: " + error.message;
 
     switch (error.code) {
       case "auth/wrong-password":
@@ -125,14 +85,15 @@ document.getElementById("submitSignIn").addEventListener("click", async (event) 
       case "auth/network-request-failed":
         errorMessage = "Network error. Please check your connection.";
         break;
-      default:
-        // Log unhandled error codes
-        console.error("Unhandled error code:", error.code);
-        break;
     }
 
-    // Show the error message to the user
     showMessage(errorMessage, "signInMessage");
     console.error(error);
   }
+});
+
+// ** Admin Logout Functionality **
+document.getElementById("adminLogoutButton")?.addEventListener("click", () => {
+  localStorage.removeItem("isAdmin");
+  window.location.href = "index.html"; // Redirect to login page
 });
