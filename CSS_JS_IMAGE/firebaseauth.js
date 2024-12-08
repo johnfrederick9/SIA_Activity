@@ -92,8 +92,3 @@ document.getElementById("submitSignIn").addEventListener("click", async (event) 
   }
 });
 
-// ** Admin Logout Functionality **
-document.getElementById("adminLogoutButton")?.addEventListener("click", () => {
-  localStorage.removeItem("isAdmin");
-  window.location.href = "index.html"; // Redirect to login page
-});
