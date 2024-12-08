@@ -496,7 +496,7 @@ a{
   }
 
   /*=============== DASHBOARD ================*/
-  .banner {
+  .user .banner {
     width: 100%;
     background-color: #3178c6;
     color: white;
@@ -511,24 +511,24 @@ a{
     transition: transform 0.4s ease, opacity 0.4s ease;
 }
 
-.banner.hiding {
+.user .banner.hiding {
     transform: translateY(-100%);
     opacity: 0;
 }
 
-.banner h1 {
+.user .banner h1 {
     margin: 0;
     font-size: 1.5rem;
     display: flex;
     align-items: center;
 }
 
-.banner .nav-links {
+.user .banner .nav-links {
     display: flex;
     align-items: center;
 }
 
-.banner a {
+.user .banner a {
     text-decoration: none;
     color: white;
     margin: 0 30px 0 0;
@@ -538,12 +538,12 @@ a{
     transition: background-color 0.3s, transform 0.3s;
 }
 
-.banner a:hover {
+.user .banner a:hover {
     background-color: #4a90e2;
     transform: scale(1.1);
 }
 
-.banner button {
+.user .banner button {
   text-decoration: none;
   color: white;
   background-color: #4a90e2;
@@ -554,25 +554,25 @@ a{
   transition: background-color 0.3s, transform 0.3s;
 }
 
-.banner button:hover {
+.user .banner button:hover {
   background-color: #0077ff;
   transform: scale(1.1);
 }
 
-.banner .toggle {
+.user .banner .toggle {
     display: none;
     font-size: 1.5rem;
     margin: 0 30px 0 0;
     cursor: pointer;
 }
 
-.main-content {
+.user .main-content {
     margin-top: 70px; /* Adjust based on banner height */
     background-color: white;
     padding: 20px;
 }
 
-.header {
+.user .header {
     background-color: #3178c6;
     color: white;
     padding: 20px;
@@ -580,13 +580,13 @@ a{
     margin-bottom: 20px;
 }
 
-.cards {
+.user .cards {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 20px;
 }
 
-.card {
+.user .card {
     background-color: #f4f4f9;
     border-radius: 8px;
     padding: 50px;
@@ -595,23 +595,23 @@ a{
     transition: transform 0.3s, box-shadow 0.3s;
 }
 
-.card:hover {
+.user .card:hover {
     transform: translateY(-5px);
     box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
 }
 
-.card h2 {
+.user .card h2 {
     margin: 0;
     font-size: 1.2rem;
 }
 
-.card p {
+.user .card p {
     margin: 10px 0;
     font-size: 0.9rem;
     color: #555;
 }
 
-.card .button {
+.user .card .button {
     background-color: #3178c6;
     color: white;
     border: none;
@@ -621,13 +621,13 @@ a{
     transition: background-color 0.3s;
 }
 
-.card .button:hover {
+.user .card .button:hover {
     background-color: #4a90e2;
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
-    .banner .nav-links {
+  .user .banner .nav-links {
         display: none;
         flex-direction: column;
         background-color: #3178c6;
@@ -640,17 +640,17 @@ a{
         animation: fadeInSlideDown 0.5s ease;
     }
 
-    .banner .nav-links.active {
+    .user .banner .nav-links.active {
         display: flex;
     }
 
-    .banner .toggle {
+    .user .banner .toggle {
         display: block;
     }
 }
 
 @media (max-width: 480px) {
-    .main-content {
+  .user .main-content {
         margin-top: 80px;
         padding: 10px;
     }
@@ -766,11 +766,11 @@ a{
   }
 }
   /*=============== ADMIN PAGE ================*/
-  .sidebar {
+  .admin .sidebar {
     background-color: #3178c6;
     color: #fff;
     width: 250px;
-    min-width: 230px;
+    min-width: 233px;
     padding: 15px;
     position: fixed;
     height: 100%;
@@ -781,16 +781,17 @@ a{
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    height: 100vh; /* Ensures the sidebar takes up full vertical height */
+    justify-content: space-between; /* Ensures footer stays at the bottom */
+    height: 100vh; /* Full vertical height */
+}
+
+.admin .sidebar-footer {
+    padding: 10px;
+    margin-top: auto; /* Pushes the footer to the bottom */
 }
 
 
-.sidebar-footer {
-  padding: 10px;
-}
-
-.sidebar-footer .logout-btn {
-  margin-top: 370px;
+.admin .sidebar-footer .logout-btn {
   color: #fff;
   text-decoration: none;
   font-size: 1rem;
@@ -802,16 +803,16 @@ a{
   transition: background-color 0.3s ease, padding 0.3s ease;
 }
 
-.sidebar-footer .logout-btn:hover {
+.admin .sidebar-footer .logout-btn:hover {
   background-color: #3a3a4d;
 }
 
 
-.sidebar.closed {
+.admin .sidebar.closed {
     width: 60px;
 }
 
-.sidebar-header {
+.admin .sidebar-header {
     font-size: 1.5rem;
     font-weight: bold;
     margin-bottom: 20px;
@@ -819,17 +820,17 @@ a{
     transition: opacity 0.3s ease;
 }
 
-.sidebar ul {
+.admin .sidebar ul {
     list-style: none;
     padding: 0;
     margin: 0;
 }
 
-.sidebar ul li {
+.admin .sidebar ul li {
     margin: 15px 0;
 }
 
-.sidebar ul li a {
+.admin .sidebar ul li a {
     color: #fff;
     text-decoration: none;
     font-size: 1rem;
@@ -841,15 +842,15 @@ a{
     transition: background-color 0.3s ease, padding 0.3s ease;
 }
 
-.sidebar ul li a:hover {
+.admin .sidebar ul li a:hover {
     background-color: #3a3a4d;
 }
 
-.sidebar ul li i {
+.admin .sidebar ul li i {
     font-size: 1.2rem;
 }
 
-.sidebar-toggle {
+.admin .sidebar-toggle {
     background-color: #3178c6;
     color: #fff;
     border: none;
@@ -863,7 +864,7 @@ a{
     display: none;
 }
 
-.sidebar-overlay {
+.admin .sidebar-overlay {
     display: none;
     position: fixed;
     top: 0;
@@ -874,11 +875,11 @@ a{
     z-index: 1500;
 }
 
-.sidebar-overlay.active {
+.admin .sidebar-overlay.active {
     display: block;
 }
 
-.main-content {
+.admin .main-content {
     flex: 1;
     margin-left: 250px;
     margin-top: 10px;
@@ -890,11 +891,11 @@ a{
     transition: margin-left 0.3s ease;
 }
 
-.sidebar.closed + .main-content {
+.admin .sidebar.closed + .main-content {
     margin-left: 60px;
 }
 
-.banners {
+.admin .banners {
     background-color: #1477e0;
     color: white;
     text-align: center;
@@ -906,24 +907,24 @@ a{
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-.table-container {
+.admin .table-container {
     overflow-x: auto;
 }
 
 @media (max-width: 768px) {
-    .sidebar-toggle {
+  .admin .sidebar-toggle {
         display: block;
     }
 
-    .main-content {
+    .admin .main-content {
         margin-left: 60px;
     }
 
-    .sidebar {
+    .admin .sidebar {
         transform: translateX(-80%);
     }
 
-    .sidebar.open {
+    .admin .sidebar.open {
         transform: translateX(0);
     }
 }
