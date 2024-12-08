@@ -41,9 +41,17 @@ document.getElementById("submitSignUp").addEventListener("click", async (event) 
   const lname = document.getElementById("rLname").value.trim();
   const email = document.getElementById("rEmail").value.trim();
   const password = document.getElementById("rPassword").value.trim();
+  const cpassword = document.getElementById("rCPassword").value.trim();
 
-  if (!fname || !lname || !email || !password) {
+  // Check if any field is empty
+  if (!fname || !lname || !email || !password || !cpassword) {
     showMessage("Please fill out all fields.", "signUpMessage");
+    return;
+  }
+
+  // Check if password and confirm password match
+  if (password !== cpassword) {
+    showMessage("Passwords do not match. Please try again.", "signUpMessage");
     return;
   }
 
@@ -51,6 +59,7 @@ document.getElementById("submitSignUp").addEventListener("click", async (event) 
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
 
+    // Save user details in Firestore
     await setDoc(doc(db, "users", user.uid), {
       firstName: fname,
       lastName: lname,
@@ -72,6 +81,7 @@ document.getElementById("submitSignUp").addEventListener("click", async (event) 
     console.error(error);
   }
 });
+
 
 // ** Login Functionality **
 document.getElementById("submitSignIn").addEventListener("click", async (event) => {
