@@ -1,67 +1,63 @@
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="https://kit.fontawesome.com/64d58efce2.js" crossorigin="anonymous"></script>
-  <script type="module" src="CSS_JS_IMAGE/firebaseauth.js"></script>
-  <link rel="stylesheet" href="CSS_JS_IMAGE/style.css" />
-  <title>ACTIVITY IN SIA</title>
-  <link rel="icon" href="CSS_JS_IMAGE/log.svg">
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-  <script>
-    (function() {
-      emailjs.init("c36W3d6imZTb9524z");
-    })();
-  </script>
-</head>
-<body>
-  <div class="container">
-    <div class="forms-container">
-      <div class="signin-signup">
-         <!-- Login Form -->
-         <form action="" class="sign-in-form" id="signIn" method="post">
-          <h2 class="title">Log In</h2>
-          <div class="input-field">
-            <i class="fas fa-envelope"></i>
-            <input type="email" placeholder="Email" id="signInEmail" name="username" required />
-          </div>
-          <div class="input-field">
-            <i class="fas fa-lock"></i>
-            <input type="password" placeholder="Password" id="signInPassword" name="password" required />
-          </div>
-          <input type="submit" id="submitSignIn" value="Login" class="btn solid" name="login" />
-          <div id="signInMessage" class="messageDiv" style="display:none;"></div>
-        </form>
-        <!-- Register Form -->
-        <form action="" class="sign-up-form" id="signUp" method="post">
-          <h2 class="title">Register</h2>
-          <div class="input-field">
-            <i class="fas fa-user"></i>
-            <input type="text" id="rFname" placeholder="First Name" name="fname" />
-          </div>
-          <div class="input-field">
-            <i class="fas fa-user"></i>
-            <input type="text" id="rLname" placeholder="Last Name" name="lname" />
-          </div>
-          <div class="input-field">
-            <i class="fas fa-envelope"></i>
-            <input type="email" id="rEmail" placeholder="Email" name="email" />
-          </div>
-          <div class="input-field">
-            <i class="fas fa-lock"></i>
-            <input type="password" id="rPassword" placeholder="Password" name="password" />
-          </div>
-          <div class="input-field">
-            <i class="fas fa-lock"></i>
-            <input type="password" id="rCPassword" placeholder="Confirm Password" name="passwordConfirm" />
-          </div>
-          <div class="input-field">
-            <i class="fas fa-key"></i>
-            <input type="text" id="rOTP" placeholder="Enter OTP" name="otp" />
-          </div>
-          <button type="button" id="sendOTP" class="btn">Send OTP</button>
-          <input type="submit" id="submitSignUp" class="btn" value="Sign up" name="submit" />
-          <div id="signUpMessage" class="messageDiv" style="display:none;"></div>
-        </form>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      src="https://kit.fontawesome.com/64d58efce2.js"
+      crossorigin="anonymous"
+    ></script>
+    <script type="module" src="CSS_JS_IMAGE/firebaseauth.js"></script>
+    <link rel="stylesheet" href="CSS_JS_IMAGE/style.css" />
+    <title>ACTIVITY IN SIA</title>
+    <link rel="icon" href="CSS_JS_IMAGE/log.svg">
+  </head>
+  <body>
+    <div class="container">
+      <div class="forms-container">
+        <div class="signin-signup">
+          <!-- Login Form -->
+          <form action="" class="sign-in-form" id="signIn" method="post">
+            <h2 class="title">Log In</h2>
+            <div class="input-field">
+              <i class="fas fa-envelope"></i>
+              <input type="email" placeholder="Email" id="signInEmail" name="username" required />
+            </div>
+            <div class="input-field">
+              <i class="fas fa-lock"></i>
+              <input type="password" placeholder="Password" id="signInPassword" name="password" required />
+            </div>
+            <input type="submit" id="submitSignIn" value="Login" class="btn solid" name="login" />
+            <div id="signInMessage" class="messageDiv" style="display:none;"></div>
+          </form>
+
+          <!-- Register Form -->
+          <form action="" class="sign-up-form" id="signUp" method="post">
+            
+            <h2 class="title">Register</h2>
+            <div class="input-field">
+              <i class="fas fa-user"></i>
+              <input type="text" id="rFname" placeholder="First Name" name="fname" />
+            </div>
+            <div class="input-field">
+              <i class="fas fa-user"></i>
+              <input type="text" id="rLname" placeholder="Last Name" name="lname" />
+            </div>
+            <div class="input-field">
+              <i class="fas fa-envelope"></i>
+              <input type="email" id="rEmail" placeholder="Email" name="email" />
+            </div>
+            <div class="input-field">
+              <i class="fas fa-lock"></i>
+              <input type="password" id="rPassword" placeholder="Password" name="password" />
+            </div>
+            <div class="input-field">
+              <i class="fas fa-lock"></i>
+              <input type="password" id="rCPassword" placeholder="Confirm Password" name="passwordConfirm" />
+            </div>
+            <input type="submit" id="submitSignUp" class="btn" value="Sign up" name="submit" />
+            <div id="signUpMessage" class="messageDiv" style="display:none;"></div>
+          </form>
         </div>
       </div>
 
