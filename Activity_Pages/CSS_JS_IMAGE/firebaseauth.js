@@ -86,6 +86,13 @@ document.getElementById("submitSignIn").addEventListener("click", async (event) 
   }
 
   try {
+    // Admin login condition
+    if (email === "Develo4" && password === "develo4@2024") {
+      showMessage("Login successfully as an Admin.", "signInMessage");
+      window.location.href = "admin.html";
+      return;
+    }
+
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
 
