@@ -12,7 +12,6 @@
     <script>
         // Redirect to login page if the admin flag is not set
         if (localStorage.getItem("isAdmin") !== "true") {
-          alert("You must log in as an admin to access this page.");
           window.location.href = "index.html"; // Redirect to the login page
         }
       </script>
