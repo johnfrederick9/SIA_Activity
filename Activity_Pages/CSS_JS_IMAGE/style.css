@@ -492,11 +492,11 @@ a{
     border-radius: 5px;
     font-size: 1rem;
     position: fixed; /* Keeps it positioned relative to the viewport */
-    top: 10%; /* Position it near the top */
-    right: 5%; /* Align to the right edge */
-    transform: none; /* Remove horizontal centering */
+    bottom: 10%; /* Position it near the bottom */
+    left: 50%; /* Center horizontally */
+    transform: translateX(-50%); /* Offset by half its width for horizontal centering */
     opacity: 0; /* Start as invisible */
-    transition: opacity 0.5s ease-in-out, top 0.5s ease-in-out; /* Smooth transition for visibility and position */
+    transition: opacity 0.5s ease-in-out, bottom 0.5s ease-in-out; /* Smooth transition for visibility and position */
     z-index: 1000; /* Ensure it's above other content */
     max-width: 90%; /* Responsive for smaller screens */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow for better visibility */
@@ -505,8 +505,9 @@ a{
   /* When visible */
   .messageDiv.visible {
     opacity: 1; /* Fully visible */
-    top: 15%; /* Move slightly down when appearing */
+    bottom: 15%; /* Move slightly up when appearing */
   }
+  
   
 /* Fade-out animation */
 @keyframes fadeOut {
