@@ -1,7 +1,7 @@
-document.getElementById("submitSignUp").addEventListener("click", (event) => {
+document.getElementById("submitSignIn").addEventListener("click", (event) => {
     event.preventDefault();
   
-    const email = document.getElementById("rEmail").value.trim();
+    const email = document.getElementById("Email").value.trim();
   
     if (!email) {
       alert("Please enter your email.");
