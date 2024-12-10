@@ -1,35 +1,49 @@
-function sendOTP() {
-    const email = document.getElementById('rEmail');
-    const otpverify = document.getElementsByClassName('otpverify')[0];
-
-let otp_val = Math.floor(Math.random() * 10000);
-
-let emailbody = `<h2>Your OTP is </h2>${otp_val}`;
-Email.send({
-    SecureToken : "862cd6bf-f2cd-4013-bc41-b7d18a00f021",
-    To : email.value,
-    From : "gelay.johnfrederick9@gmail.com",
-    Subject : "Email OTP",
-    Body : emailbody,
-}).then(
-  message => {
-    if (message === "OK"){
-        alert("OTP sent to your email "+email.value);
-
-        otpverify.style.display = "flex";
-        const otp_inp = document.getElementById('otp_inp');
-        const itp_btn = document.getElementById('otp-btn');
-
-        otp_btn.addEventListener('click', () => {
-            if (otp_inp.value == otp_val) {
-                alert("Email address verified...");
-            }
-            else {
-                alert("Invalid OTP");
-            }
-
-        })
+document.getElementById("submitSignUp").addEventListener("click", (event) => {
+    event.preventDefault();
+  
+    const email = document.getElementById("rEmail").value.trim();
+  
+    if (!email) {
+      alert("Please enter your email.");
+      return;
     }
-  }
-);
-}
+  
+    // Generate and send OTP
+    const otp_val = Math.floor(1000 + Math.random() * 9000);
+    const emailBody = `<h2>Your OTP is </h2>${otp_val}`;
+  
+    Email.send({
+      SecureToken: "862cd6bf-f2cd-4013-bc41-b7d18a00f021",
+      To: email,
+      From: "gelay.johnfrederick9@gmail.com",
+      Subject: "Email OTP",
+      Body: emailBody,
+    }).then((message) => {
+      if (message === "OK") {
+        alert(`OTP sent to ${email}.`);
+        document.getElementById("otpSection").style.display = "block";
+  
+        // Save OTP for verification
+        localStorage.setItem("currentOtp", otp_val);
+      } else {
+        alert("Failed to send OTP. Please try again.");
+      }
+    });
+  });
+  
+  document.getElementById("verifyOtpBtn").addEventListener("click", () => {
+    const enteredOtp = document.getElementById("otpInput").value.trim();
+    const currentOtp = localStorage.getItem("currentOtp");
+  
+    if (enteredOtp === currentOtp) {
+      alert("OTP verified successfully!");
+      localStorage.removeItem("currentOtp");
+  
+      // Proceed with registration
+      document.getElementById("otpSection").style.display = "none";
+      document.getElementById("submitSignUp").dataset.otpVerified = "true";
+    } else {
+      alert("Invalid OTP. Please try again.");
+    }
+  });
+  

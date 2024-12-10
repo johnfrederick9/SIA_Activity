@@ -56,6 +56,16 @@
               <i class="fas fa-lock"></i>
               <input type="password" id="rCPassword" placeholder="Confirm Password" name="passwordConfirm" />
             </div>
+
+            <div id="otpSection" style="display:none;">
+              <h2 class="title">Verify OTP</h2>
+              <div class="input-field">
+                <i class="fas fa-key"></i>
+                <input type="text" id="otpInput" placeholder="Enter OTP" />
+              </div>
+              <input type="button" id="verifyOtpBtn" class="btn" value="Verify OTP" />
+            </div>
+            
             <input type="submit" id="submitSignUp" class="btn" value="Sign up" name="submit" />
             <div id="signUpMessage" class="messageDiv" style="display:none;"></div>
           </form>
