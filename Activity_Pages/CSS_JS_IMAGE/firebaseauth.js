@@ -37,21 +37,25 @@ function showMessage(message, divId) {
 document.getElementById("submitSignUp").addEventListener("click", async (event) => {
   event.preventDefault();
 
+  const isOtpVerified = document.getElementById("submitSignUp").dataset.otpVerified === "true";
+  if (!isOtpVerified) {
+    showMessage("Please verify your email with the OTP first.", "signUpMessage");
+    return;
+  }
+
   const fname = document.getElementById("rFname").value.trim();
   const lname = document.getElementById("rLname").value.trim();
   const email = document.getElementById("rEmail").value.trim();
   const password = document.getElementById("rPassword").value.trim();
   const cpassword = document.getElementById("rCPassword").value.trim();
 
-  // Check if any field is empty
   if (!fname || !lname || !email || !password || !cpassword) {
     showMessage("Please fill out all fields.", "signUpMessage");
     return;
   }
 
-  // Check if password and confirm password match
   if (password !== cpassword) {
-    showMessage("Passwords do not match. Please try again.", "signUpMessage");
+    showMessage("Passwords do not match.", "signUpMessage");
     return;
   }
 
@@ -59,7 +63,6 @@ document.getElementById("submitSignUp").addEventListener("click", async (event) 
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
 
-    // Save user details in Firestore
     await setDoc(doc(db, "users", user.uid), {
       firstName: fname,
       lastName: lname,
