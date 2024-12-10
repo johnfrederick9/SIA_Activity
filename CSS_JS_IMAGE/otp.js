@@ -13,7 +13,7 @@ document.getElementById("submitSignUp").addEventListener("click", (event) => {
     const emailBody = `<h2>Your OTP is </h2>${otp_val}`;
   
     Email.send({
-      SecureToken: "862cd6bf-f2cd-4013-bc41-b7d18a00f021",
+      SecureToken: "623dfa6f-a53e-411d-b72c-c5c518261af7",
       To: email,
       From: "gelay.johnfrederick9@gmail.com",
       Subject: "Email OTP",
