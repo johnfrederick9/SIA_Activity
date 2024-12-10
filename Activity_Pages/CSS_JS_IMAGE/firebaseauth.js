@@ -107,15 +107,24 @@ document.getElementById("submitSignIn").addEventListener("click", async (event) 
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
 
-    localStorage.setItem("loggedInUserId", user.uid);
+    // Generate OTP
+    const otp = Math.floor(10000 + Math.random() * 90000); // Generate a 5-digit OTP
+    localStorage.setItem("otp", otp); // Store OTP locally
 
-    const userDoc = await getDoc(doc(db, "users", user.uid));
-    if (userDoc.exists()) {
-      showMessage("Log-In successful!", "signInMessage");
-      window.location.href = "dashboard.html";
-    } else {
-      showMessage("User not found in database. Please register first.", "signInMessage");
-    }
+    // Send OTP to user's email
+    let emailBody = `<h2>Your OTP is:</h2><p>${otp}</p>`;
+    await Email.send({
+      SecureToken: "33e09ff1-676d-4ea2-bbcb-daf0fe85db81",
+      To: email,
+      From: "gelay.johnfrederick9@gmail.com",
+      Subject: "Your OTP Verification Code",
+      Body: emailBody,
+    });
+
+    // Redirect to OTP page
+    showMessage("OTP sent to your email. Please verify.", "signInMessage");
+    localStorage.setItem("loggedInUserId", user.uid);
+    window.location.href = "otp.html";
   } catch (error) {
     let errorMessage = "Login failed: " + error.message;
 
@@ -141,4 +150,5 @@ document.getElementById("submitSignIn").addEventListener("click", async (event) 
     console.error(error);
   }
 });
+
 
