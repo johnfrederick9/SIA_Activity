@@ -113,18 +113,24 @@ document.getElementById("submitSignIn").addEventListener("click", async (event) 
 
     // Send OTP to user's email
     let emailBody = `<h2>Your OTP is:</h2><p>${otp}</p>`;
-    await Email.send({
-      SecureToken: "94a072ec-7653-4af5-abf4-6548c28d1981",
-      To: email,
-      From: "gelay.johnfrederick9@gmail.com",
-      Subject: "Your OTP Verification Code",
-      Body: emailBody,
-    });
+    try {
+      await Email.send({
+        SecureToken: "94a072ec-7653-4af5-abf4-6548c28d1981",
+        To: email,
+        From: "gelay.johnfrederick9@gmail.com",
+        Subject: "Your OTP Verification Code",
+        Body: emailBody,
+      });
 
-    // Redirect to OTP page
-    showMessage("OTP sent to your email. Please verify.", "signInMessage");
-    localStorage.setItem("loggedInUserId", user.uid);
-    window.location.href = "otp.html";
+      // Redirect to OTP page if email is sent successfully
+      showMessage("OTP sent to your email. Please verify.", "signInMessage");
+      localStorage.setItem("loggedInUserId", user.uid);
+      window.location.href = "otp.html";
+    } catch (emailError) {
+      // Handle email sending failure
+      showMessage("Failed to send OTP. Please try again.", "signInMessage");
+      console.error("Email send error:", emailError);
+    }
   } catch (error) {
     let errorMessage = "Login failed: " + error.message;
 
@@ -150,5 +156,6 @@ document.getElementById("submitSignIn").addEventListener("click", async (event) 
     console.error(error);
   }
 });
+
 
 
