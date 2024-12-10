@@ -111,48 +111,26 @@ document.getElementById("submitSignIn").addEventListener("click", async (event) 
     const otp = Math.floor(10000 + Math.random() * 90000); // Generate a 5-digit OTP
     localStorage.setItem("otp", otp); // Store OTP locally
 
-   // Send OTP to user's email
-let emailBody = `<h2>Your OTP is:</h2><p>${otp}</p>`;
-try {
-  console.log("Attempting to send OTP email...");
-  console.log("Email details:", {
-    SecureToken: "f9fb4a96-d76c-48cb-ad46-e67753518070",
-    To: email,
-    From: "gelay.johnfrederick9@gmail.com",
-    Subject: "Your OTP Verification Code",
-    Body: emailBody,
-  });
+    // Send OTP to user's email
+    let emailBody = `<h2>Your OTP is:</h2><p>${otp}</p>`;
+    try {
+      await Email.send({
+        SecureToken: " f9fb4a96-d76c-48cb-ad46-e67753518070",
+        To: email,
+        From: "gelay.johnfrederick9@gmail.com",
+        Subject: "Your OTP Verification Code",
+        Body: emailBody
+      });
 
-  await Email.send({
-    SecureToken: "f9fb4a96-d76c-48cb-ad46-e67753518070",
-    To: email,
-    From: "gelay.johnfrederick9@gmail.com",
-    Subject: "Your OTP Verification Code",
-    Body: emailBody,
-  });
-
-  console.log("Email sent successfully.");
-  // Redirect to OTP page if email is sent successfully
-  showMessage("OTP sent to your email. Please verify.", "signInMessage");
-  localStorage.setItem("loggedInUserId", user.uid);
-  window.location.href = "otp.html";
-} catch (emailError) {
-  // Handle email sending failure
-  showMessage("Failed to send OTP. Please try again.", "signInMessage");
-
-  // Debugging email error
-  console.error("Email send error:", emailError);
-
-  // Additional checks
-  if (emailError.message.includes("token")) {
-    console.error("Possible issue: Invalid or expired SecureToken.");
-  } else if (emailError.message.includes("network")) {
-    console.error("Possible issue: Network connectivity issue.");
-  } else if (emailError.message.includes("recipient")) {
-    console.error("Possible issue: Invalid recipient email address.");
-  }
-}
-
+      // Redirect to OTP page if email is sent successfully
+      showMessage("OTP sent to your email. Please verify.", "signInMessage");
+      localStorage.setItem("loggedInUserId", user.uid);
+      window.location.href = "otp.html";
+    } catch (emailError) {
+      // Handle email sending failure
+      showMessage("Failed to send OTP. Please try again.", "signInMessage");
+      console.error("Email send error:", emailError);
+    }
   } catch (error) {
     let errorMessage = "Login failed: " + error.message;
 
