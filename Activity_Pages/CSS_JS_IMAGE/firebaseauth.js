@@ -35,12 +35,6 @@ function showMessage(message, divId) {
   }, 5000);
 }
 
-// Email validation function
-function isValidEmail(email) {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(email);
-}
-
 // ** Registration Functionality **
 document.getElementById("submitSignUp").addEventListener("click", async (event) => {
   event.preventDefault();
