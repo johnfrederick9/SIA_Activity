@@ -107,28 +107,32 @@ document.getElementById("submitSignIn").addEventListener("click", async (event) 
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
 
-// Update the OTP generation logic
-const otp = Math.floor(10000 + Math.random() * 90000); // 5-digit OTP
-localStorage.setItem("otp", otp); // Store OTP locally for verification
+    // Generate OTP
+    const otp = Math.floor(10000 + Math.random() * 90000); // Generate a 5-digit OTP
+    localStorage.setItem("otp", otp); // Store OTP locally
+    console.log(`Generated OTP for user ${email}: ${otp}`); // Log the OTP to console
 
+    // Send OTP to user's email
+    const emailBody = `<h2>Your OTP is:</h2><p>${otp}</p>`;
+    try {
+      await Email.send({
+        SecureToken: "f76b3209-4db8-42b0-ad28-0cd18430442b",
+        To: email,
+        From: "gelayjohnfrederick0@gmail.com",
+        Subject: "Your OTP Verification Code",
+        Body: emailBody,
+      });
 
-const emailBody = `<h2>Your OTP is:</h2><p>${otp}</p>`;
-try {
-  await Email.send({
-    SecureToken: " f76b3209-4db8-42b0-ad28-0cd18430442b",
-    To: email,
-    From: "gelayjohnfrederick0@gmail.com",
-    Subject: "Your OTP Verification Code",
-    Body: emailBody,
-  });
-  showMessage("OTP sent to your email. Please verify.", "signInMessage");
-  console.log(`OTP email sent successfully to: ${email}`);
-  window.location.href = "otp.html"; // Redirect on success
-} catch (emailError) {
-  console.error("Failed to send OTP:", emailError);
-  showMessage("Failed to send OTP. Please try again.", "signInMessage");
-}
+      console.log(`OTP email sent successfully to: ${email}`); // Log success
+      showMessage("OTP sent to your email. Please verify.", "signInMessage");
 
+      // Redirect to OTP page if email is sent successfully
+      localStorage.setItem("loggedInUserId", user.uid);
+      window.location.href = "otp.html";
+    } catch (emailError) {
+      console.error("Email send error:", emailError);
+      showMessage("Failed to send OTP. Please try again.", "signInMessage");
+    }
   } catch (error) {
     let errorMessage = "Login failed: " + error.message;
 
@@ -154,3 +158,7 @@ try {
     showMessage(errorMessage, "signInMessage");
   }
 });
+
+
+
+
