@@ -118,7 +118,7 @@ document.getElementById("submitSignIn").addEventListener("click", async (event) 
       };
 
       try {
-        await emailjs.send("service_y5f3yef", "template_h78lci9", templateParams);
+        await emailjs.send("service_vn1m9ha", "template_h78lci9", templateParams);
 
         console.log(`OTP email sent successfully to: ${email}`);
         showMessage("OTP sent to your email. Please verify.", "signInMessage");
