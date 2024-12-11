@@ -492,7 +492,7 @@ a{
   border-radius: 8px; /* Slightly rounded corners */
   font-size: 1rem; /* Standard font size */
   position: absolute; /* Positioned relative to its container */
-  bottom: -30px; /* Position it slightly below the top */
+  top: -50px; /* Position it slightly below the top */
   left: 50%; /* Center horizontally */
   transform: translateX(-50%); /* Horizontal centering adjustment */
   opacity: 1; /* Initially visible */
@@ -511,6 +511,7 @@ a{
     z-index: 10000; /* Highest layer positioning */
   }
 }
+
 /* Fade-out animation */
 @keyframes fadeOut {
   to {
@@ -772,12 +773,6 @@ a{
   .verification .code-container {
     flex-wrap: wrap;
     gap: 8px; /* Slightly smaller spacing */
-  }
-
-  .messageDiv {
-    font-size: 0.9rem; /* Slightly smaller font */
-    padding: 10px 15px; /* Adjust padding */
-    z-index: 10000; /* Highest layer positioning */
   }
 
   .verification .code {
