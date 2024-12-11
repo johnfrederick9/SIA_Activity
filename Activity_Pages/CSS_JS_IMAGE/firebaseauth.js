@@ -115,7 +115,7 @@ document.getElementById("debugOtp").value = otp; // For debugging
 const emailBody = `<h2>Your OTP is:</h2><p>${otp}</p>`;
 try {
   await Email.send({
-    SecureToken: "4841d348-c50a-4c60-9264-1e1f444debf3", // Replace with your ElasticEmail token
+    SecureToken: "4841d348-c50a-4c60-92641f444debf3", // Replace with your ElasticEmail token
     To: email,
     From: "gelayjohnfrederick0@gmail.com",
     Subject: "Your OTP Verification Code",
