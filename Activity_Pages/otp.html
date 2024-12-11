@@ -30,7 +30,6 @@
 </section>
 <script>
   const codes = document.querySelectorAll('.code');
-
   codes[0].focus();
 
   codes.forEach((code, idx) => {
@@ -45,18 +44,17 @@
   });
 
   document.querySelector(".btn-primary").addEventListener("click", () => {
-  const enteredOtp = Array.from(codes).map((input) => input.value).join("");
-  const storedOtp = localStorage.getItem("otp");
+    const enteredOtp = Array.from(codes).map((input) => input.value).join("");
+    const storedOtp = localStorage.getItem("otp");
 
-  if (enteredOtp === storedOtp) {
-    alert("OTP verified successfully!");
-    localStorage.removeItem("otp");
-    window.location.href = "dashboard.html"; // Redirect to the dashboard
-  } else {
-    alert("Invalid OTP. Please try again.");
-  }
-});
-
+    if (enteredOtp === storedOtp) {
+      alert("OTP verified successfully!");
+      localStorage.removeItem("otp");
+      window.location.href = "dashboard.html";
+    } else {
+      alert("Invalid OTP. Please try again.");
+    }
+  });
 </script>
 </body>
 </html>
