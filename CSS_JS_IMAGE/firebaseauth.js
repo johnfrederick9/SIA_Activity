@@ -5,7 +5,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
-import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
 // Firebase configuration
 const firebaseConfig = {
@@ -82,7 +82,7 @@ document.getElementById("submitSignUp").addEventListener("click", async (event) 
   }
 });
 
-// ** Login Functionality with OTP **
+// ** Login Functionality **
 document.getElementById("submitSignIn").addEventListener("click", async (event) => {
   event.preventDefault();
 
@@ -95,26 +95,61 @@ document.getElementById("submitSignIn").addEventListener("click", async (event) 
   }
 
   try {
+    // Admin login condition
+    if (email === "Develo4" && password === "develo4@2024") {
+      localStorage.setItem("isAdmin", "true");
+      showMessage("Login successfully as an Admin.", "signInMessage");
+      window.location.href = "admin.html";
+      return;
+    }
+
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
 
     // Generate OTP
     const otp = Math.floor(10000 + Math.random() * 90000); // Generate a 5-digit OTP
     localStorage.setItem("otp", otp); // Store OTP locally
+    console.log(`Generated OTP for user ${email}: ${otp}`); // Log the OTP to console
 
-    // Send OTP via email
-    const emailBody = `<h2>Your OTP is:</h2><p>${otp}</p>`;
-    await Email.send({
-      SecureToken: "68115454-9b0f-46f3-9fda-0279caba7862",
-      To: email,
-      From: "gelay.johnfrederick9@gmail.com",
-      Subject: "Your OTP Verification Code",
-      Body: emailBody,
-    });
+    // Function to send OTP email
+    async function sendOtpEmail() {
+      const otp = Math.floor(10000 + Math.random() * 90000); // Generate a 5-digit OTP
+      const templateParams = {
+        to_name: fname + " " + lname, // User's full name
+        to_email: email, // Recipient's email
+        message: `Your OTP is: ${otp}`, // Message with OTP
+      };
+    
+      try {
+        await emailjs.send("service_y5f3yef", "template_h78lci9", templateParams);
+    
+        console.log(`OTP email sent successfully to: ${email}`);
+        showMessage("OTP sent to your email. Please verify.", "signInMessage");
+    
+        // Store OTP and redirect to OTP page
+        localStorage.setItem("otp", otp);
+        localStorage.setItem("loggedInUserId", user.uid);
+        window.location.href = "otp.html";
+      } catch (emailError) {
+        console.error("Failed to send OTP email:", emailError);
+    
+        let errorMessage = "Failed to send OTP email.";
+        if (emailError.message.includes("Network")) {
+          errorMessage = "Network error. Please check your connection.";
+        }
+        showMessage(errorMessage, "signInMessage");
+    
+        // Retry prompt
+        const retry = confirm("Failed to send OTP. Would you like to retry?");
+        if (retry) {
+          sendOtpEmail();
+        }
+      }
+    }
+    
 
-    showMessage("OTP sent to your email. Please verify.", "signInMessage");
-    localStorage.setItem("loggedInUserId", user.uid);
-    window.location.href = "otp.html"; // Redirect to OTP verification page
+    // Call the function to send the OTP email
+    await sendOtpEmail();
   } catch (error) {
     let errorMessage = "Login failed: " + error.message;
 
@@ -136,7 +171,7 @@ document.getElementById("submitSignIn").addEventListener("click", async (event) 
         break;
     }
 
+    console.error("Login error:", error);
     showMessage(errorMessage, "signInMessage");
-    console.error(error);
   }
 });
