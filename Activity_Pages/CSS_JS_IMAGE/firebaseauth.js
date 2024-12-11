@@ -134,7 +134,7 @@ document.getElementById("submitSignIn").addEventListener("click", async (event) 
         console.error("Failed to send OTP email:", emailError);
     
         let errorMessage = "Failed to send OTP email.";
-        if (emailError.message.includes("Network")) {
+        if (emailError?.message && emailError.message.includes("Network")) {
           errorMessage = "Network error. Please check your connection.";
         }
         showMessage(errorMessage, "signInMessage");
@@ -145,8 +145,7 @@ document.getElementById("submitSignIn").addEventListener("click", async (event) 
           sendOtpEmail();
         }
       }
-    }
-    
+    }    
 
     // Call the function to send the OTP email
     await sendOtpEmail();
