@@ -492,7 +492,7 @@ a{
   border-radius: 8px; /* Slightly rounded corners */
   font-size: 1rem; /* Standard font size */
   position: absolute; /* Positioned relative to its container */
-  top: -20px; /* Position it slightly below the top */
+  top: -15px; /* Position it slightly below the top */
   left: 50%; /* Center horizontally */
   transform: translateX(-50%); /* Horizontal centering adjustment */
   opacity: 1; /* Initially visible */
@@ -669,7 +669,7 @@ a{
   font-size: 0.9rem; /* Slightly smaller font */
   padding: 10px 15px; /* Adjust padding */
   z-index: 10000; /* Highest layer positioning */
-  top: -20px; /* Position it slightly below the top */
+  top: -15px; /* Position it slightly below the top */
 }
 
 @media (max-width: 480px) {
@@ -683,7 +683,7 @@ a{
   font-size: 0.9rem; /* Slightly smaller font */
   padding: 10px 15px; /* Adjust padding */
   z-index: 10000; /* Highest layer positioning */
-  top: -20px; /* Position it slightly below the top */
+  top: -15px; /* Position it slightly below the top */
 }
 
 /* Animations */
