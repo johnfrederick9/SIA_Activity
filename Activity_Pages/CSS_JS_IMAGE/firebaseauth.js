@@ -108,47 +108,45 @@ document.getElementById("submitSignIn").addEventListener("click", async (event) 
 
     // Generate OTP
     const otp = Math.floor(10000 + Math.random() * 90000); // Generate a 5-digit OTP
-    localStorage.setItem("otp", otp); // Store OTP locally
-    console.log(`Generated OTP for user ${email}: ${otp}`); // Log the OTP to console
 
     // Function to send OTP email
     async function sendOtpEmail() {
-      const otp = Math.floor(10000 + Math.random() * 90000); // Generate a 5-digit OTP
       const templateParams = {
         to_name: "Secret", // User's full name
         to_email: email, // Recipient's email
         message: `Your OTP is: ${otp}`, // Message with OTP
       };
-    
+
       try {
         await emailjs.send("service_y5f3yef", "template_h78lci9", templateParams);
-    
+
         console.log(`OTP email sent successfully to: ${email}`);
         showMessage("OTP sent to your email. Please verify.", "signInMessage");
-    
-        // Store OTP and redirect to OTP page
+
+        // Store OTP and logged-in user details
         localStorage.setItem("otp", otp);
         localStorage.setItem("loggedInUserId", user.uid);
-        window.location.href = "otp.html";
+        return true; // Indicate success
       } catch (emailError) {
         console.error("Failed to send OTP email:", emailError);
-    
+
         let errorMessage = "Failed to send OTP email.";
         if (emailError?.message && emailError.message.includes("Network")) {
           errorMessage = "Network error. Please check your connection.";
         }
         showMessage(errorMessage, "signInMessage");
-    
-        // Retry prompt
-        const retry = confirm("Failed to send OTP. Would you like to retry?");
-        if (retry) {
-          sendOtpEmail();
-        }
+        return false; // Indicate failure
       }
-    }    
+    }
 
-    // Call the function to send the OTP email
-    await sendOtpEmail();
+    // Call the function to send the OTP email and check success
+    const otpSent = await sendOtpEmail();
+
+    if (otpSent) {
+      window.location.href = "otp.html";
+    } else {
+      showMessage("OTP could not be sent. Please try again.", "signInMessage");
+    }
   } catch (error) {
     let errorMessage = "Login failed: " + error.message;
 
