@@ -87,19 +87,16 @@ async function sendOtpEmail(recipientName, recipientEmail, otp) {
   const templateParams = {
     to_name: recipientName, // User's full name
     to_email: recipientEmail, // Recipient's email
-    message: `${otp}`, // Message with OTP
+    message: `${otp}`, // OTP message
   };
 
   try {
     const response = await emailjs.send("service_y5f3yef", "template_h78lci9", templateParams);
-
     console.log(`OTP email sent successfully to: ${recipientEmail}`);
     showMessage("OTP sent to your email. Please verify.", "signInMessage");
-
     return true; // Indicate success
   } catch (emailError) {
     console.error("Failed to send OTP email:", emailError);
-
     let errorMessage = "Failed to send OTP email.";
     if (emailError?.message && emailError.message.includes("Network")) {
       errorMessage = "Network error. Please check your connection.";
@@ -109,7 +106,7 @@ async function sendOtpEmail(recipientName, recipientEmail, otp) {
   }
 }
 
-// Updated Login Functionality
+// ** Login Functionality **
 document.getElementById("submitSignIn").addEventListener("click", async (event) => {
   event.preventDefault();
 
@@ -131,7 +128,8 @@ document.getElementById("submitSignIn").addEventListener("click", async (event) 
     const otp = Math.floor(10000 + Math.random() * 90000); // Generate a 5-digit OTP
 
     // Send OTP email
-    const otpSent = await sendOtpEmail(`${fname} ${lname}`, email, otp);
+    const fullName = `${fname} ${lname}` || "User"; // Use full name if available, fallback to "User"
+    const otpSent = await sendOtpEmail(fullName, email, otp);
 
     if (otpSent) {
       // Store OTP and logged-in user details
@@ -167,3 +165,4 @@ document.getElementById("submitSignIn").addEventListener("click", async (event) 
     showMessage(errorMessage, "signInMessage");
   }
 });
+
