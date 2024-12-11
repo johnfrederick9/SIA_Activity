@@ -48,13 +48,11 @@
     const storedOtp = localStorage.getItem("otp");
 
     if (enteredOtp === storedOtp) {
-     
-      showMessage("OTP verified successfully!", "signInMessage");
+      alert("OTP verified successfully!");
       localStorage.removeItem("otp");
       window.location.href = "dashboard.html";
     } else {
-      
-      showMessage("Invalid OTP. Please try again.", "signInMessage");
+      alert("Invalid OTP. Please try again.");
     }
   });
 </script>
