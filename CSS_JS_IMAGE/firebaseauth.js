@@ -82,7 +82,34 @@ document.getElementById("submitSignUp").addEventListener("click", async (event) 
   }
 });
 
-// ** Login Functionality **
+// Function to send OTP email
+async function sendOtpEmail(recipientName, recipientEmail, otp) {
+  const templateParams = {
+    to_name: recipientName, // User's full name
+    to_email: recipientEmail, // Recipient's email
+    message: `${otp}`, // Message with OTP
+  };
+
+  try {
+    const response = await emailjs.send("service_y5f3yef", "template_h78lci9", templateParams);
+
+    console.log(`OTP email sent successfully to: ${recipientEmail}`);
+    showMessage("OTP sent to your email. Please verify.", "signInMessage");
+
+    return true; // Indicate success
+  } catch (emailError) {
+    console.error("Failed to send OTP email:", emailError);
+
+    let errorMessage = "Failed to send OTP email.";
+    if (emailError?.message && emailError.message.includes("Network")) {
+      errorMessage = "Network error. Please check your connection.";
+    }
+    showMessage(errorMessage, "signInMessage");
+    return false; // Indicate failure
+  }
+}
+
+// Updated Login Functionality
 document.getElementById("submitSignIn").addEventListener("click", async (event) => {
   event.preventDefault();
 
@@ -97,55 +124,20 @@ document.getElementById("submitSignIn").addEventListener("click", async (event) 
   }
 
   try {
-    // Admin login condition
-    if (email === "Develo4" && password === "develo4@2024") {
-      localStorage.setItem("isAdmin", "true");
-      showMessage("Login successfully as an Admin.", "signInMessage");
-      window.location.href = "admin.html";
-      return;
-    }
-
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
 
     // Generate OTP
     const otp = Math.floor(10000 + Math.random() * 90000); // Generate a 5-digit OTP
 
-// Function to send OTP email
-async function sendOtpEmail() {
-  const templateParams = {
-    to_name: fname + " " +lname, // User's full name
-    to_email: email,   // Recipient's email
-    message: ` ${otp}`, // Message with OTP
-  };
-
-  try {
-    const response = await emailjs.send("service_y5f3yef", "template_h78lci9", templateParams);
-
-    console.log(`OTP email sent successfully to: ${email}`);
-    showMessage("OTP sent to your email. Please verify.", "signInMessage");
-
-    // Store OTP and logged-in user details
-    localStorage.setItem("otp", otp);
-    localStorage.setItem("loggedInUserId", user.uid);
-    return true; // Indicate success
-  } catch (emailError) {
-    console.error("Failed to send OTP email:", emailError);
-
-    let errorMessage = "Failed to send OTP email.";
-    if (emailError?.message && emailError.message.includes("Network")) {
-      errorMessage = "Network error. Please check your connection.";
-    }
-    showMessage(errorMessage, "signInMessage");
-    return false; // Indicate failure
-  }
-}
-
-
-    // Call the function to send the OTP email and check success
-    const otpSent = await sendOtpEmail();
+    // Send OTP email
+    const otpSent = await sendOtpEmail(`${fname} ${lname}`, email, otp);
 
     if (otpSent) {
+      // Store OTP and logged-in user details
+      localStorage.setItem("otp", otp);
+      localStorage.setItem("loggedInUserId", user.uid);
+
       window.location.href = "otp.html";
     } else {
       showMessage("OTP could not be sent. Please try again.", "signInMessage");
