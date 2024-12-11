@@ -116,7 +116,7 @@ document.getElementById("submitSignIn").addEventListener("click", async (event) 
     const emailBody = `<h2>Your OTP is:</h2><p>${otp}</p>`;
     try {
       await Email.send({
-        SecureToken: "dcdb98b7-3bb9-4be7-a31e-4eb5b693a022",
+        SecureToken: "4841d348-c50a-4c60-9264-1e1f444debf3",
         To: email,
         From: "gelayjohnfrederick0@gmail.com",
         Subject: "Your OTP Verification Code",
