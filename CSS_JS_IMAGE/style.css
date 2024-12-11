@@ -492,7 +492,7 @@ a{
     border-radius: 5px;
     font-size: 1rem;
     position: fixed; /* Keeps it positioned relative to the viewport */
-    bottom: 5%; /* Position it near the bottom */
+    bottom: 0%; /* Position it near the bottom */
     left: 50%; /* Center horizontally */
     transform: translateX(-50%); /* Offset by half its width for horizontal centering */
     opacity: 0; /* Start as invisible */
