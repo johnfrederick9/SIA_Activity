@@ -115,7 +115,7 @@ document.getElementById("submitSignIn").addEventListener("click", async (event) 
     async function sendOtpEmail() {
       const otp = Math.floor(10000 + Math.random() * 90000); // Generate a 5-digit OTP
       const templateParams = {
-        to_name: fname + " " + lname, // User's full name
+        to_name: rFname + " " + rLname, // User's full name
         to_email: email, // Recipient's email
         message: `Your OTP is: ${otp}`, // Message with OTP
       };
