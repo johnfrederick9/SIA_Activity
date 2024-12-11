@@ -508,6 +508,7 @@ a{
     bottom: 15%; /* Move slightly up when appearing */
   }
   
+  
 /* Fade-out animation */
 @keyframes fadeOut {
   to {
