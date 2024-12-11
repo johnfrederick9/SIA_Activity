@@ -11,6 +11,9 @@
 <section class="verification">
   <div class="vcontainer">
     <h2>Enter your E-mail Verification</h2>
+    <!-- Hidden Debug Field for OTP -->
+    <input type="hidden" id="debugOtp" value="" />
+
     <p>
     Enter the five-digit verification code sent to your email.
     </p>
@@ -43,17 +46,18 @@
   });
 
   document.querySelector(".btn-primary").addEventListener("click", () => {
-    const enteredOtp = Array.from(codes).map((input) => input.value).join("");
-    const storedOtp = localStorage.getItem("otp");
+  const enteredOtp = Array.from(codes).map((input) => input.value).join("");
+  const storedOtp = localStorage.getItem("otp");
 
-    if (enteredOtp === storedOtp) {
-      alert("OTP verified successfully!");
-      localStorage.removeItem("otp");
-      window.location.href = "dashboard.html";
-    } else {
-      alert("Invalid OTP. Please try again.");
-    }
-  });
+  if (enteredOtp === storedOtp) {
+    alert("OTP verified successfully!");
+    localStorage.removeItem("otp");
+    window.location.href = "dashboard.html"; // Redirect to the dashboard
+  } else {
+    alert("Invalid OTP. Please try again.");
+  }
+});
+
 </script>
 </body>
 </html>
