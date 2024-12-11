@@ -25,6 +25,7 @@
 
           <!-- Login Form -->
           <form class="sign-in-form" id="signIn" method="post">
+            <div id="signInMessage" class="messageDiv" style="display:none;"></div>
             <h2 class="title">Log In</h2>
             <div class="input-field">
               <i class="fas fa-envelope"></i>
@@ -35,11 +36,12 @@
               <input type="password" placeholder="Password" id="signInPassword" name="password" required />
             </div>
             <input type="submit" id="submitSignIn" value="Login" class="btn solid" name="login" />
-            <div id="signInMessage" class="messageDiv" style="display:none;"></div>
+            
           </form>
 
           <!-- Register Form -->
           <form class="sign-up-form" id="signUp" method="post">
+            <div id="signInMessage" class="messageDiv" style="display:none;"></div>
             <h2 class="title">Register</h2>
             <div class="input-field">
               <i class="fas fa-user"></i>
@@ -62,7 +64,6 @@
               <input type="password" id="rCPassword" placeholder="Confirm Password" name="passwordConfirm" required minlength="6" />
             </div>
             <input type="submit" id="submitSignUp" class="btn" value="Sign up" name="submit" />
-            <div id="signUpMessage" class="messageDiv" style="display:none;"></div>
           </form>
         </div>
       </div>
