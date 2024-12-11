@@ -86,6 +86,8 @@ document.getElementById("submitSignUp").addEventListener("click", async (event) 
 document.getElementById("submitSignIn").addEventListener("click", async (event) => {
   event.preventDefault();
 
+  const fname = document.getElementById("rFname").value.trim();
+  const lname = document.getElementById("rLname").value.trim();
   const email = document.getElementById("signInEmail").value.trim();
   const password = document.getElementById("signInPassword").value.trim();
 
@@ -112,7 +114,7 @@ document.getElementById("submitSignIn").addEventListener("click", async (event) 
 // Function to send OTP email
 async function sendOtpEmail() {
   const templateParams = {
-    to_name: "Secret", // User's full name
+    to_name: fname + " " +lname, // User's full name
     to_email: email,   // Recipient's email
     message: `Your OTP is: ${otp}`, // Message with OTP
   };
