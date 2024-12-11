@@ -484,31 +484,32 @@ a{
     color: #4caf50; /* Green color for success messages */
   }
   
+  /* Enhanced modern pop-up styling */
+.messageDiv {
+  background-color: #007bff; /* Primary blue color */
+  color: #ffffff; /* White text for contrast */
+  padding: 15px 25px; /* Increased padding for better touch target */
+  border-radius: 8px; /* Slightly rounded corners */
+  font-size: 1rem; /* Standard font size */
+  position: absolute; /* Positioned relative to its container */
+  top: 10%; /* Position it slightly below the top */
+  left: 50%; /* Center horizontally */
+  transform: translateX(-50%); /* Horizontal centering adjustment */
+  opacity: 1; /* Initially visible */
+  z-index: 10000; /* Highest layer positioning */
+  max-width: 90%; /* Responsive width */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Enhanced shadow for visibility */
+  text-align: center; /* Center align text */
+  word-wrap: break-word; /* Handle long text gracefully */
+}
+
+/* Optional media query for very small screens */
+@media (max-width: 600px) {
   .messageDiv {
-    background-color: #007bff;
-    color: white;
-    padding: 10px 20px;
-    margin: 5px;
-    border-radius: 5px;
-    font-size: 1rem;
-    position: fixed; /* Keeps it positioned relative to the viewport */
-    bottom: 0px; /* Position it near the bottom */
-    left: 50%; /* Center horizontally */
-    transform: translateX(-50%); /* Offset by half its width for horizontal centering */
-    opacity: 0; /* Start as invisible */
-    transition: opacity 0.5s ease-in-out, bottom 0.5s ease-in-out; /* Smooth transition for visibility and position */
-    z-index: 1000; /* Ensure it's above other content */
-    max-width: 90%; /* Responsive for smaller screens */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow for better visibility */
+    font-size: 0.9rem; /* Slightly smaller font */
+    padding: 10px 15px; /* Adjust padding */
   }
-  
-  /* When visible */
-  .messageDiv.visible {
-    opacity: 1; /* Fully visible */
-    bottom: 15%; /* Move slightly up when appearing */
-  }
-  
-  
+}
 /* Fade-out animation */
 @keyframes fadeOut {
   to {
