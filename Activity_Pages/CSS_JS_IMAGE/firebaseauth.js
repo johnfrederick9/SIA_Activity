@@ -116,7 +116,7 @@ async function sendOtpEmail() {
   const templateParams = {
     to_name: fname + " " +lname, // User's full name
     to_email: email,   // Recipient's email
-    message: `Your OTP is: ${otp}`, // Message with OTP
+    message: ` ${otp}`, // Message with OTP
   };
 
   try {
